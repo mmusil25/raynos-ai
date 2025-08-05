@@ -6,6 +6,8 @@ A Python implementation of a real-time audio processing pipeline that streams au
 
 **This implementation was developed without access to an actual Omi pendant device.** The BLE audio streaming functionality uses a mock implementation that simulates the expected behavior. When a real Omi device becomes available, the mock BLE source can be replaced with actual device communication.
 
+**🛠️ Current Top Priority:** Replace the mock BLE audio stream with a real-time connection to the physical Omi pendant. Contributions in this area are highly welcomed and will have the highest impact.
+
 ## 🎯 Features
 
 - **BLE Audio Streaming** with auto-reconnect functionality (mock and real implementations)
@@ -144,7 +146,7 @@ python-ble-audio/
 
 ```bash
 # For Deepgram API (alternative to Whisper)
-export DEEPGRAM_API_KEY=d1c227c9c76c848873e756807d0bfdf758d4d26e
+export DEEPGRAM_API_KEY=YOUR_DEEPGRAM_API_KEY  # Replace with your own key; do NOT commit secrets
 
 # For GPU acceleration (automatic if available)
 export CUDA_VISIBLE_DEVICES=0

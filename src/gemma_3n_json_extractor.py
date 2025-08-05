@@ -226,6 +226,16 @@ Example: "Please call John Smith at 3 PM tomorrow about the project deadline"
             result["timestamp_ms"] = result.get("timestamp_ms", timestamp_ms or int(time.time() * 1000))
             result["intent"] = result.get("intent", "unknown")
             result["entities"] = result.get("entities", [])
+
+            # If the model returned empty/placeholder values, fall back to rule-based extraction
+            entities_empty = (
+                not result["entities"] or
+                all(not str(e).strip() for e in result["entities"])
+            )
+            intent_empty = not str(result["intent"]).strip() or result["intent"].strip() in {"<intent>", "unknown"}
+            if entities_empty or intent_empty:
+                logger.info("Model output had empty intent/entities – using rule-based fallback")
+                return self._fallback_extraction(transcript, timestamp_ms)
             
             logger.info(f"Successfully parsed JSON - intent: {result['intent']}, entities: {result['entities']}")
             return result
