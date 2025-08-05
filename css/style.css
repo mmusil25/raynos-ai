@@ -1,0 +1,876 @@
+/* CSS Variables - Apple Vision Pro Inspired */
+:root {
+	--glass-bg: rgba(255, 224, 176, 0.08);
+	--glass-border: rgba(255, 224, 176, 0.12);
+	--glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+	--glass-backdrop: blur(40px);
+	--accent-primary: #FFE0B0;
+	--accent-secondary: #A6CFFF;
+	--accent-tertiary: #D4EBFF;
+	--text-primary: #FFFFFF;
+	--text-secondary: rgba(255, 255, 255, 0.85);
+	--text-tertiary: rgba(255, 255, 255, 0.65);
+	--bg-primary: #011820;
+	--bg-secondary: #012E3C;
+	--bg-glass-light: rgba(255, 224, 176, 0.05);
+	--bg-glass-medium: rgba(255, 224, 176, 0.1);
+	--border-glass: rgba(255, 224, 176, 0.15);
+	--border-accent: rgba(255, 224, 176, 0.3);
+	--shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.37);
+	--shadow-elevated: 0 20px 64px rgba(0, 0, 0, 0.5);
+	--shadow-hero: 0 32px 80px rgba(0, 0, 0, 0.6);
+}
+
+/* Reset & Base Styles */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+	/*
+			Use the hero artwork itself as the site background.  The soft
+			sunrise colours of the product shot give the page a warm, cinematic
+			atmosphere.  We centre the image and scale it to cover the viewport
+			to avoid tiling.  A fallback solid colour is defined via
+			background-color for browsers that cannot load the image.
+			*/
+	background-color: var(--bg-primary);
+	background-image: url('../images/hero-image.webp');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	color: var(--text-primary);
+	line-height: 1.6;
+	overflow-x: hidden;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: 600;
+	line-height: 1.2;
+	letter-spacing: -0.02em;
+}
+
+h1 {
+	font-size: clamp(2.5rem, 6vw, 4.5rem);
+	font-weight: 700;
+	letter-spacing: -0.03em;
+}
+
+h2 {
+	font-size: clamp(1.8rem, 4vw, 3rem);
+	font-weight: 600;
+    margin-bottom: 2rem;
+}
+
+h3 {
+	font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+	font-weight: 600;
+}
+
+p {
+	font-size: 1.1rem;
+	line-height: 1.7;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Glass Morphism Components */
+.glass {
+	background: var(--glass-bg);
+	border: 1px solid var(--glass-border);
+	border-radius: 24px;
+	box-shadow: var(--glass-shadow);
+	position: relative;
+	overflow: hidden;
+	will-change: transform;
+	transform: translateZ(0);
+}
+
+/* Backdrop filter with fallback support */
+@supports (backdrop-filter: blur(40px)) {
+	.glass {
+		backdrop-filter: var(--glass-backdrop);
+		-webkit-backdrop-filter: var(--glass-backdrop);
+	}
+}
+
+@supports not (backdrop-filter: blur(40px)) {
+	.glass {
+		background: rgba(255, 255, 255, 0.15);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+	}
+}
+
+.glass::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 1px;
+	background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+	opacity: 0.8;
+}
+
+.glass-elevated {
+	background: var(--bg-glass-medium);
+	border: 1px solid var(--border-glass);
+	border-radius: 32px;
+	box-shadow: var(--shadow-elevated);
+	will-change: transform;
+	transform: translateZ(0);
+}
+
+/* Backdrop filter with fallback for elevated glass */
+@supports (backdrop-filter: blur(60px)) {
+	.glass-elevated {
+		backdrop-filter: blur(60px);
+		-webkit-backdrop-filter: blur(60px);
+	}
+}
+
+@supports not (backdrop-filter: blur(60px)) {
+	.glass-elevated {
+		background: rgba(255, 255, 255, 0.18);
+		border: 1px solid rgba(255, 255, 255, 0.25);
+	}
+}
+
+/* Layout */
+.container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 2rem;
+}
+
+/* Navigation */
+nav {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	padding: 0.8rem 0;
+	/* Use the deep teal from our palette for consistent brand identity on the navigation bar */
+	background: var(--bg-primary);
+	border-bottom: 1px solid var(--border-glass);
+	z-index: 1000;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform;
+	transform: translateZ(0);
+	/* Disable backdrop blur on the navigation so the chosen colour isn’t washed out by the page gradient */
+	backdrop-filter: none;
+	-webkit-backdrop-filter: none;
+}
+
+/* Navigation backdrop filter with fallback */
+@supports (backdrop-filter: blur(40px)) {
+	nav {
+		/* Override the default 40px blur so the nav colour stays consistent */
+		backdrop-filter: none;
+		-webkit-backdrop-filter: none;
+	}
+}
+
+@supports not (backdrop-filter: blur(40px)) {
+	nav {
+		/* Fallback colour for browsers without backdrop-filter support */
+		background: var(--bg-primary);
+	}
+}
+
+.nav-content {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 2rem;
+}
+
+.logo {
+	font-size: 1.8rem;
+	font-weight: 700;
+	background: linear-gradient(135deg, var(--text-primary), var(--accent-primary));
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	letter-spacing: -0.02em;
+}
+
+/* Hero Section */
+.hero {
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	position: relative;
+	overflow: hidden;
+	/* Use a peach glow behind the hero text.  Increased opacity for better contrast on dark backgrounds */
+}
+
+.sectionsWrapper {
+  	overflow: hidden;  
+    background: var(--bg-primary) radial-gradient(ellipse at top, rgba(255, 224, 176, 0.10) 0%, transparent 70%);
+}
+
+.sectionsWrapper::before {
+	content: '';
+	position: absolute;
+	top: -50%;
+	right: -30%;
+	width: 135%;
+	height: 200%;
+	background: radial-gradient(circle, rgba(255, 224, 176, 0.08) 0%, transparent 70%);
+	animation: float 20s ease-in-out infinite;
+	will-change: transform;
+	transform: translateZ(0);
+}
+
+@keyframes float {
+
+	0%,
+	100% {
+		transform: translateY(0px) rotate(0deg) translateZ(0);
+	}
+
+	50% {
+		transform: translateY(-20px) rotate(5deg) translateZ(0);
+	}
+}
+
+.hero-content {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 5rem;
+	align-items: center;
+	position: relative;
+	z-index: 2;
+}
+
+.hero-text {
+	animation: slideInLeft 1s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform;
+	transform: translateZ(0);
+}
+
+@keyframes slideInLeft {
+	from {
+		opacity: 0;
+		transform: translateX(-50px) translateZ(0);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(0) translateZ(0);
+	}
+}
+
+.hero h1 {
+	margin-bottom: 1.5rem;
+	/* Darker gradient for better contrast on the light hero backdrop */
+	background: linear-gradient(305deg, var(--bg-primary) 0%, var(--accent-secondary) 100%);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.hero h1 span {
+	background: linear-gradient(370deg, var(--accent-secondary), var(--bg-primary));
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.hero p {
+	font-size: 1.3rem;
+	color: var(--text-secondary);
+	margin-bottom: 2.5rem;
+	max-width: 500px;
+	line-height: 1.6;
+}
+
+.cta-primary {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.8rem;
+	padding: 1.2rem 2.5rem;
+	border-radius: 50px;
+	font-weight: 600;
+	font-size: 1.1rem;
+	/* Gradient now transitions from peach gold to sky blue to echo the new palette */
+	background: linear-gradient(135deg, rgba(255, 224, 176, 0.95), rgba(166, 207, 255, 0.9));
+	color: var(--bg-primary);
+	box-shadow: 0 8px 32px rgba(255, 224, 176, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	border: none;
+	cursor: pointer;
+	will-change: transform;
+	transform: translateZ(0);
+	position: relative;
+	overflow: hidden;
+}
+
+.cta-primary::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: linear-gradient(135deg, rgba(166, 207, 255, 0.1), rgba(255, 224, 176, 0.1));
+	opacity: 0;
+	transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cta-primary:hover {
+	transform: translateY(-3px) translateZ(0);
+	box-shadow: 0 16px 48px rgba(255, 224, 176, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+	background: linear-gradient(135deg, rgba(166, 207, 255, 0.9), rgba(255, 224, 176, 0.85));
+}
+
+.cta-primary:hover::before {
+	opacity: 1;
+}
+
+.cta-primary:active {
+	transform: translateY(-1px) translateZ(0) scale(0.98);
+	box-shadow: 0 4px 16px rgba(255, 224, 176, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.1);
+	transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+	background: linear-gradient(135deg, rgba(255, 224, 176, 0.95), rgba(166, 207, 255, 0.9));
+}
+
+.hero-image {
+	border-radius: 32px;
+	overflow: hidden;
+	box-shadow: var(--shadow-hero);
+	animation: slideInRight 1s cubic-bezier(0.4, 0, 0.2, 1);
+	position: relative;
+	will-change: transform;
+	transform: translateZ(0);
+}
+
+.hero-image::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	/* brighten the hero product photo slightly to contrast against the dark background */
+	background: linear-gradient(135deg, rgba(255, 224, 176, 0.1), transparent 70%);
+	z-index: 1;
+}
+
+@keyframes slideInRight {
+	from {
+		opacity: 0;
+		transform: translateX(50px) translateZ(0);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(0) translateZ(0);
+	}
+}
+
+.hero-image img {
+    display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+	transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform;
+	transform: translateZ(0);
+}
+
+.hero-image:hover img {
+	transform: scale(1.05) translateZ(0);
+}
+
+/* Problem/Solution Section */
+.problem-solution {
+	padding: 8rem 0;
+	position: relative;
+}
+
+.cards-container {
+	display: grid;
+	gap: 3rem;
+	grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+}
+
+.problem-card,
+.solution-card {
+	padding: 3rem 2.5rem;
+	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform;
+	transform: translateZ(0);
+}
+
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(30px) translateZ(0);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0) translateZ(0);
+	}
+}
+
+.problem-card:hover,
+.solution-card:hover {
+	transform: translateY(-8px) translateZ(0);
+	box-shadow: var(--shadow-elevated);
+}
+
+.quote {
+	margin: 2rem 0;
+	font-style: italic;
+	color: var(--accent-primary);
+	/*padding-left: 1.5rem;*/
+	font-size: 1.15rem;
+	position: relative;
+}
+
+ul.problem-list,
+ul.solution-features {
+	list-style: none;
+	margin-top: 2rem;
+}
+
+.problem-list li,
+.solution-features li {
+	margin-bottom: 1.5rem;
+	font-size: 1.1rem;
+	color: var(--text-secondary);
+	padding-left: 2.2rem;
+	position: relative;
+}
+
+.problem-list li::before {
+	content: '❌';
+	color: #f00;
+	font-weight: bold;
+    font-size: 1.2rem;
+    line-height: 1;
+    top: 50%;
+	margin-top: -9.6px;
+	position: absolute;
+	left: 0;
+    background: none;
+    
+  background: linear-gradient(90deg, #ffb3b3, #ff0000, #8b0000);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  filter: drop-shadow(0 0 3px rgba(0,0,0,0.3))
+}
+
+.solution-features li {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	padding-left: 0;
+}
+
+.solution-features li span {
+    font-size: 1.5rem;
+}
+
+/* SVG bullet icon styles */
+.bullet-icon {
+	width: 24px;
+	height: 24px;
+	flex-shrink: 0;
+	color: var(--accent-primary);
+	filter: drop-shadow(0 0 8px rgba(255, 224, 176, 0.3));
+}
+
+.core-innovation {
+	margin-top: 2rem;
+	padding-top: 2rem;
+	border-top: 1px solid var(--border-glass);
+	color: var(--text-secondary);
+}
+
+/* Features Section */
+.features {
+	padding: 8rem 0;
+	position: relative;
+}
+
+.features::before {
+	content: '';
+	position: absolute;
+	top: -50%;
+	right: -30%;
+	width: 135%;
+	height: 200%;
+	background: radial-gradient(circle, rgba(255, 224, 176, 0.08) 0%, transparent 70%);
+	animation: float 20s ease-in-out infinite;
+	will-change: transform;
+	transform: translateZ(0);
+}
+
+.features-header {
+	text-align: center;
+	margin-bottom: 0;
+	position: relative;
+	z-index: 2;
+}
+
+.features-header h2 {
+	background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+    padding-bottom: 3rem;
+}
+
+.features-grid {
+	display: grid;
+	gap: 3rem;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	position: relative;
+	z-index: 2;
+}
+
+.feature-card {
+	padding: 3rem 2.5rem;
+	text-align: center;
+	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	position: relative;
+	will-change: transform;
+	transform: translateZ(0);
+}
+
+.feature-card:hover {
+	transform: translateY(-12px) translateZ(0);
+	box-shadow: var(--shadow-elevated);
+    border-radius: 40px;
+}
+
+.feature-icon-wrap {
+	width: 120px;
+	height: 120px;
+	margin: 0 auto 2rem;
+	border-radius: 32px;
+	display: grid;
+	place-items: center;
+	/* soft peach tint on the feature icon backdrop */
+	background: radial-gradient(circle at 30% 30%, rgba(255, 224, 176, 0.12), rgba(255, 224, 176, 0.03) 70%);
+	border: 1px solid var(--border-glass);
+	box-shadow: var(--shadow-glass), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform;
+	transform: translateZ(0);
+}
+
+/* Feature icon backdrop filter with fallback */
+@supports (backdrop-filter: blur(20px)) {
+	.feature-icon-wrap {
+		backdrop-filter: blur(20px);
+		-webkit-backdrop-filter: blur(20px);
+	}
+}
+
+@supports not (backdrop-filter: blur(20px)) {
+	.feature-icon-wrap {
+		background: radial-gradient(circle at 30% 30%, rgba(255, 224, 176, 0.18), rgba(255, 224, 176, 0.08) 70%);
+	}
+}
+
+.feature-card:hover .feature-icon-wrap {
+	background: radial-gradient(circle at 30% 30%, rgba(255, 224, 176, 0.08), rgba(255, 224, 176, 0.025) 70%);
+	transform: scale(1.05) translateZ(0);
+}
+
+.feature-icon {
+	width: 60px;
+	height: 60px;
+	color: #A6CFFF;
+	filter: drop-shadow(0 0 12px rgba(255, 224, 176, 0.4));
+}
+
+.feature-card h3 {
+	margin-bottom: 1rem;
+	color: var(--text-primary);
+}
+
+.feature-card p {
+	color: var(--text-tertiary);
+	font-size: 1.1rem;
+	line-height: 1.6;
+}
+
+/* Opportunity Section */
+.opportunity {
+	padding: 6rem 0 1px;
+	text-align: center;
+	position: relative;
+    background: rgba(1,24,32,0.9);
+}
+
+.badge {
+	display: inline-block;
+	padding: 0.8rem 1.5rem;
+	border-radius: 50px;
+	font-weight: 600;
+	line-height: 1;
+	font-size: 1rem;
+	margin: 0.5rem 0.5rem;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	will-change: transform;
+	transform: translateZ(0);
+}
+
+
+
+/* Badge backdrop filter with fallback */
+@supports (backdrop-filter: blur(20px)) {
+	.badge {
+		backdrop-filter: blur(20px);
+		-webkit-backdrop-filter: blur(20px);
+	}
+}
+
+@supports not (backdrop-filter: blur(20px)) {
+	.badge-red {
+		/* fallback tint using the peach accent */
+		background: rgba(255, 224, 176, 0.25) !important;
+	}
+
+	.badge-blue {
+		/* fallback tint using the sky accent */
+		background: rgba(166, 207, 255, 0.25) !important;
+	}
+}
+
+.badge:hover {
+	transform: translateY(-2px) translateZ(0);
+}
+
+.badge-red {
+	/* primary badge now uses the warm peach tone */
+	background: rgba(255, 224, 176, 0.15);
+	border: 1px solid rgba(255, 224, 176, 0.4);
+	color: #FFE0B0;
+	box-shadow: 0 4px 16px rgba(255, 224, 176, 0.2);
+    display: table;
+	margin-bottom: 18px;
+}
+
+.badge-blue {
+	/* secondary badge uses the sky blue accent */
+	background: rgba(166, 207, 255, 0.15);
+	border: 1px solid rgba(166, 207, 255, 0.4);
+	color: #A6CFFF;
+	box-shadow: 0 4px 16px rgba(166, 207, 255, 0.2);
+    display: table;
+	margin-bottom: 18px;
+}
+
+.opportunity p {
+	font-size: 1.2rem;
+	margin-bottom: 1.5rem;
+	color: var(--text-secondary);
+}
+
+.opportunity p:first-child {
+	font-size: 2rem;
+	font-weight: 600;
+	color: var(--text-primary);
+	margin-top: 2rem;
+}
+
+.opportunity .badges {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+/* Founder Section */
+.founder {
+	padding: 2rem 0 6rem;
+	text-align: center;
+        background: rgba(1,24,32,0.9);
+}
+
+.founder-card {
+	max-width: 700px;
+	margin: 0 auto;
+	padding: 4rem 3rem;
+    text-align: left;
+}
+
+.founder-card h2 {
+	margin-bottom: 2rem;
+	background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 100%);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.founder-card p {
+	font-size: 1.2rem;
+	line-height: 1.8;
+	color: var(--text-secondary);
+}
+
+/* Footer */
+footer {
+	padding: 4rem 0;
+	text-align: center;
+	background: rgba(1, 24, 32, 0.9);
+}
+
+footer p {
+	color: var(--text-tertiary);
+	font-size: 1rem;
+    background: linear-gradient(181deg, var(--bg-primary) 0%, var(--accent-secondary) 100%);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+	.container {
+		padding: 0 1.5rem;
+	}
+
+	.hero-content {
+		grid-template-columns: 1fr;
+		gap: 3rem;
+		text-align: center;
+	}
+
+	.hero {
+		padding-top: 100px;
+	}
+
+	.cards-container {
+		grid-template-columns: 1fr;
+		gap: 2rem;
+	}
+
+	.features-grid {
+		grid-template-columns: 1fr;
+		gap: 2rem;
+	}
+
+	.problem-card,
+	.solution-card {
+		padding: 2rem 1.5rem;
+	}
+
+	.feature-card {
+		padding: 2rem 1.5rem;
+	}
+
+	.founder-card {
+		padding: 2.5rem 1.5rem;
+	}
+
+	.badge {
+		font-size: 0.9rem;
+		padding: 0.6rem 1.2rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.hero h1 {
+		font-size: 2.2rem;
+	}
+
+	.hero p {
+		font-size: 1.1rem;
+	}
+
+	.cta-primary {
+		padding: 1rem 2rem;
+		font-size: 1rem;
+	}
+}
+
+/* Scroll animations */
+@media (prefers-reduced-motion: no-preference) {
+	.glass {
+		animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+		will-change: transform;
+		transform: translateZ(0);
+	}
+}
+
+/* Enhanced accessibility */
+@media (prefers-reduced-motion: reduce) {
+
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}
+
+/* Focus styles */
+.cta-primary:focus,
+.badge:focus {
+	outline: 2px solid var(--accent-primary);
+	outline-offset: 2px;
+}
+
+/* Navigation focus styles */
+.logo:focus {
+	outline: 2px solid var(--accent-primary);
+	outline-offset: 4px;
+	border-radius: 8px;
+}
+
+/* Interactive card focus styles */
+.problem-card:focus,
+.solution-card:focus,
+.feature-card:focus,
+.founder-card:focus {
+	outline: 2px solid var(--accent-primary);
+	outline-offset: 4px;
+}
+
+/* General interactive element focus */
+a:focus {
+	outline: 2px solid var(--accent-primary);
+	outline-offset: 2px;
+	border-radius: 4px;
+}
+
+/* Remove default focus outline for custom styled elements */
+.logo:focus,
+.cta-primary:focus,
+.badge:focus {
+	outline: 2px solid var(--accent-primary);
+	outline-offset: 3px;
+	border-radius: 6px;
+}
