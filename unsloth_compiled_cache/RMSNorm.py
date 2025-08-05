@@ -58,10 +58,10 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as F
 from typing import Any, List, Optional, Tuple, Union, Dict, Set, Callable
-from transformers.models.siglip.modeling_siglip import (torch)
+from transformers.models.gemma3n.modeling_gemma3n import (F, torch)
 
 def forward(self, x: torch.Tensor) -> torch.Tensor:
     """
     Runs forward pass.
     """
-    return F.rms_norm(x, self.normalized_shape, self.weight, self.eps).to(input.dtype)
+    return F.rms_norm(x, self.normalized_shape, self.weight, self.eps).to(input.dtype).to(input.dtype)

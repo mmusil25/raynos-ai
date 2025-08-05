@@ -58,7 +58,7 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as F
 from typing import Any, List, Optional, Tuple, Union, Dict, Set, Callable
-from transformers.models.siglip.modeling_siglip import (np, nn)
+from transformers.models.gemma3n.modeling_gemma3n import (F, nn)
 
 def forward(self, input: Tensor) -> Tensor:
     self._check_input_dim(input)
@@ -106,4 +106,4 @@ def forward(self, input: Tensor) -> Tensor:
         bn_training,
         exponential_average_factor,
         self.eps,
-    ).to(input.dtype)
+    ).to(input.dtype).to(input.dtype)

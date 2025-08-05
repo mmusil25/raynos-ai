@@ -58,7 +58,7 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as F
 from typing import Any, List, Optional, Tuple, Union, Dict, Set, Callable
-from transformers.models.siglip.modeling_siglip import (Optional, np, nn)
+from transformers.models.gemma3n.modeling_gemma3n import (F, Sequence, Optional, nn)
 
 def forward(self, input: Tensor, output_size: Optional[list[int]] = None) -> Tensor:
     if self.padding_mode != "zeros":
@@ -89,4 +89,4 @@ def forward(self, input: Tensor, output_size: Optional[list[int]] = None) -> Ten
         output_padding,
         self.groups,
         self.dilation,
-    ).to(input.dtype)
+    ).to(input.dtype).to(input.dtype)

@@ -413,12 +413,12 @@ def refresh_display():
         readable_ts = datetime.fromtimestamp(ts_seconds).strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
         
         json_html += f'''
-        <div style="margin: 10px 0; padding: 10px; background: #f5f5f5; border-radius: 5px; border: 1px solid #ddd;">
-            <div style="color: #666; margin-bottom: 5px;">
-                <strong>[{e["time"]}]</strong> Intent: <span style="color: #0066cc; font-weight: bold;">{json_data.get("intent", "unknown")}</span>
-                | Keywords: <span style="color: #008800;">{", ".join(json_data.get("entities", []))[:100] or "none"}</span>
+        <div style="margin: 10px 0; padding: 10px; background: #2b2b2b; border-radius: 5px; border: 1px solid #444;">
+            <div style="color: #ccc; margin-bottom: 5px;">
+                <strong>[{e["time"]}]</strong> Intent: <span style="color: #4d94ff; font-weight: bold;">{json_data.get("intent", "unknown")}</span>
+                | Keywords: <span style="color: #66ff66;">{", ".join(json_data.get("entities", []))[:100] or "none"}</span>
             </div>
-            <pre style="margin: 0; overflow-x: auto; background: white; padding: 8px; border-radius: 3px;">{json_str}</pre>
+            <pre style="margin: 0; overflow-x: auto; background: #1e1e1e; padding: 8px; border-radius: 3px; color: #ddd;">{json_str}</pre>
             <div style="color: #999; font-size: 11px; margin-top: 5px;">Timestamp: {readable_ts}</div>
         </div>
         '''
@@ -523,13 +523,13 @@ def process_audio_file(audio_file):
             readable_ts = datetime.fromtimestamp(ts_seconds).strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
             
             json_html += f'''
-            <div style="padding: 10px; background: #f5f5f5; border-radius: 5px; border: 1px solid #ddd;">
+            <div style="padding: 10px; background: #2b2b2b; border-radius: 5px; border: 1px solid #444; color: #eee;">
                 <div style="margin-bottom: 10px;">
-                    <strong>Intent:</strong> <span style="color: #0066cc; font-weight: bold;">{json_result.get("intent", "unknown")}</span><br>
-                    <strong>Keywords:</strong> <span style="color: #008800;">{", ".join(json_result.get("entities", [])) or "none"}</span><br>
-                    <strong>Timestamp:</strong> <span style="color: #666;">{readable_ts}</span>
+                    <strong>Intent:</strong> <span style="color: #4d94ff; font-weight: bold;">{json_result.get("intent", "unknown")}</span><br>
+                    <strong>Keywords:</strong> <span style="color: #66ff66;">{", ".join(json_result.get("entities", [])) or "none"}</span><br>
+                    <strong>Timestamp:</strong> <span style="color: #999;">{readable_ts}</span>
                 </div>
-                <pre style="margin: 0; padding: 10px; background: white; border-radius: 3px; overflow-x: auto;">{json.dumps(json_formatted, indent=2)}</pre>
+                <pre style="margin: 0; padding: 10px; background: #1e1e1e; border-radius: 3px; overflow-x: auto; color: #ddd;">{json.dumps(json_formatted, indent=2)}</pre>
             </div>
             '''
             json_html += f'</div>'

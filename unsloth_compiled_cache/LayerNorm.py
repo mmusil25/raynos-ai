@@ -58,34 +58,9 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as F
 from typing import Any, List, Optional, Tuple, Union, Dict, Set, Callable
-from transformers.models.gemma3n.modeling_gemma3n import (F, Sequence, Optional, nn)
+from transformers.models.gemma3n.modeling_gemma3n import (F)
 
-def forward(self, input: Tensor, output_size: Optional[list[int]] = None) -> Tensor:
-    if self.padding_mode != "zeros":
-        raise ValueError(
-            "Only `zeros` padding mode is supported for ConvTranspose1d"
-        )
-
-    assert isinstance(self.padding, tuple)
-    # One cannot replace List by Tuple or Sequence in "_output_padding" because
-    # TorchScript does not support `Sequence[T]` or `Tuple[T, ...]`.
-    num_spatial_dims = 1
-    output_padding = self._output_padding(
-        input,
-        output_size,
-        self.stride,  # type: ignore[arg-type]
-        self.padding,  # type: ignore[arg-type]
-        self.kernel_size,  # type: ignore[arg-type]
-        num_spatial_dims,
-        self.dilation,  # type: ignore[arg-type]
-    )
-    return F.conv_transpose1d(
-        input,
-        self.weight,
-        self.bias,
-        self.stride,
-        self.padding,
-        output_padding,
-        self.groups,
-        self.dilation,
+def forward(self, input: Tensor) -> Tensor:
+    return F.layer_norm(
+        input, self.normalized_shape, self.weight, self.bias, self.eps
     ).to(input.dtype).to(input.dtype)
