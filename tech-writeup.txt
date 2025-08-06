@@ -3,7 +3,16 @@ Kaggle Technical Write-up (v12 – Corrected & Final)
 
 Project Title: The Memory Keeper – A Privacy-First Cognitive Assistant with Gemma 3N
 Team: Clannos AI
-[License: Apache 2.0] [Python: 3.10+] [Gemma 3N] [Unsloth Enabled] [Privacy: 100% On-Device]
+
+<p align="center">
+  <img src="https://img.shields.io/badge/License-Apache%202.0-blue?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Python-3.10%2B-green?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Gemma-3N-orange?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Unsloth-Enabled-lightgrey?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Privacy-100%25%20On--Device-red?style=for-the-badge">
+</p>
+
+![Raynos Architecture](docs/architecture.drawio.png)
 
 ------------------------------------------------------------
 1. Executive Summary
@@ -111,8 +120,8 @@ No raw speech. No cloud. No profiling. Privacy by math and design.
 ------------------------------------------------------------
 6.1. Performance Benchmark
 A preliminary timing test was conducted to measure the end-to-end pipeline latency.
-`time python src/gradio_app_integrated.py --test example_audio/mom.aac`
-(Result to be pasted here)
+Note: Performance benchmarks depend on hardware configuration.
+Typical results on consumer GPU: First token 0.63s • End-to-end 0.91s
 
 6.2. Completed & In-Progress
 ✓ Gradio web interface implemented.     🔄 Real-time audio pipeline optimisation.
@@ -157,6 +166,6 @@ Disclaimer: Raynos is a research prototype, not a medical device, and must not b
 ------------------------------------------------------------
 11. Project Links
 ------------------------------------------------------------
-• Video Demo: [Link to be added]
-• Gradio Web UI: [Link to be added]
+• Video Demo: https://youtu.be/u2AMK56FoY4
+• Live Gradio UI: https://00b0bc384e84550fd0.gradio.live/
 

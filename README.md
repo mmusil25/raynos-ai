@@ -1,4 +1,4 @@
-# Raynos – Gemma 3-N / Unsloth On-Device Pipeline
+# Raynos – On-Device Gemma 3-N / Unsloth Pipeline
 
 A privacy-first AI pipeline that processes audio locally using Gemma 3-N with Unsloth optimization. This implementation showcases real-time audio transcription with Whisper and structured data extraction, all running completely on-device with no cloud dependencies.
 
@@ -11,6 +11,8 @@ A privacy-first AI pipeline that processes audio locally using Gemma 3-N with Un
 </p>
 
 ![Raynos Architecture](docs/architecture.drawio.png)
+
+🌐 **[Live Demo](https://00b0bc384e84550fd0.gradio.live/)** | 📹 **[Video Walkthrough](https://youtu.be/u2AMK56FoY4)** | 📦 **[GitHub Repository](https://github.com/mmusil25/raynos-ai)**
 
 
 ## 🚨 Important Disclosure
@@ -68,7 +70,7 @@ git clone https://github.com/mmusil25/raynos-ai.git
 cd raynos-ai
 
 # Create virtual environment
-python -m venv venv
+python3.10 -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
