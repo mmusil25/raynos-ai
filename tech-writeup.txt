@@ -3,15 +3,16 @@ Kaggle Technical Write-up (v12 – Corrected & Final)
 
 Project Title: The Memory Keeper – A Privacy-First Cognitive Assistant with Gemma 3N
 Team: Clannos AI
+[License: Apache 2.0] [Python: 3.10+] [Gemma 3N] [Unsloth Enabled] [Privacy: 100% On-Device]
 
 ------------------------------------------------------------
 1. Executive Summary
 ------------------------------------------------------------
-The Memory Keeper re-imagines how 1.3 billion people living with cognitive challenges manage daily health.  We created Raynos — the world’s first jewellery-grade AI pendant that listens passively, understands contextually, and remembers privately.
+The Memory Keeper re-imagines how 1.3 billion people living with cognitive challenges manage daily health. We created Raynos — a privacy-first AI assistant that listens, understands contextually, and remembers privately.
 
 Our breakthrough follows a "zero / zero / zero" paradigm:
 • Zero wake-words – no trigger phrase required.
-• Zero cloud dependency – all inference runs on-device with Gemma 3N and Whisper-Tiny.
+• Zero cloud dependency – all inference runs on-device with Gemma 3N and Whisper.
 • Zero cognitive burden – users behave naturally; Raynos learns their routines.
 
 Raw audio never leaves the device and is securely erased after processing, delivering the first truly privacy-preserving cognitive assistant.  Built on open hardware and Google’s open Gemma weights, the prototype demonstrates how edge LLMs can address a 25 billion-dollar global healthcare crisis — starting with one mother who simply wants to remember her pills.
@@ -36,66 +37,64 @@ Why current solutions fail
 Technology must adapt to humans, not the reverse.
 
 ------------------------------------------------------------
-3. Solution Overview – Raynos Pendant + Glyna AI Core
+3. Solution Overview – Raynos: A Privacy-First AI Assistant
 ------------------------------------------------------------
 “While others build apps for phones she can’t use… we built dignity she can wear.”
 
-Raynos is a lightweight pendant that:
-• Listens passively to ambient conversation (no wake-word).
-• Processes locally via Gemma 3N and Whisper-Tiny (no cloud).
-• Forgets instantly after extracting structured memory (privacy by design).
+Raynos is an AI assistant that:
+• Listens to audio input through microphone or file uploads (no wake-word required).
+• Processes locally via Gemma 3N and Whisper (no cloud dependencies).
+• Extracts structured data instantly while preserving privacy (audio deleted after processing).
 
 Hackathon MVP features
-• Passive appointment capture – speech → WhisperTiny → Gemma3N → calendar.  Example: “Doctor Thursday at 2” captured automatically.
+• Passive appointment capture – speech → Whisper → Gemma 3N → structured JSON.  Example: "Doctor Thursday at 2" captured automatically.
 • Medication reminders – schedule → haptics/audio + Active Confirmation Loop.  Prevents double-dosing and alerts carers.
-• Caregiver dashboard – BLE push of encrypted JSON, giving peace-of-mind without eaves-dropping.
+• Caregiver dashboard – Structured JSON output providing insights without storing raw audio.
 
 ------------------------------------------------------------
 4. Technical Architecture & Gemma 3N Innovation
 ------------------------------------------------------------
-4.1 Hardware Foundation
-• ESP32-S3 dual-core MCU with 520 KB SRAM and 8 MB PSRAM.
-• 8 GB micro-SD for model shards and encrypted datastore.
-• PDM microphone and class-D haptic driver.
-• Bluetooth LE 5 for optional phone synchronisation.
-• 500 mAh Li-ion battery (~ 8 h active).
+
 
 4.2 End-to-End On-Device Pipeline (text representation)
-Microphone (16 kHz PCM) → Whisper-Tiny (4-bit FP16) → Gemma 3N (4-bit via Unsloth) →
-• Intent & entities stored locally (AES-256).
-• Audio immediately deleted.
-• Scheduler/Notifier triggers reminders.
+(See docs/architecture.drawio.png for a detailed diagram)
+Gradio UI (mic/file) → Audio Processing (queue) → Whisper (FP16) → Gemma 3N (4-bit Unsloth) → JSON Output
 
 4.3 Why Gemma 3N?
 • Open-weight, commercially friendly license.
-• Per-Layer Embeddings (PLE) deliver ≈ 30 % speed-up on embedded SoCs.
-• Outperforms Llama-2-7B on intent & slot-filling at one-third the size.
+• Optimized for structured data extraction and intent recognition.
+• Compact size (2B parameters) enables local inference on consumer hardware.
 
 4.4 Unsloth Advantage
-• 40 % less VRAM (fits in ~ 1.5 GB).
-• 2–3 × faster inference than stock HF on ESP32-S3.
-• Seamless LoRA fine-tuning for domain vocabulary.
-Target: under 1 second latency for a 5-second audio clip.
+Unsloth optimizes the `gemma-3n-e4b-it` model, delivering:
+• A target of 40% less VRAM, aiming for a ~1.5 GB footprint.
+• An expected 2-3x faster inference speed compared to standard Hugging Face implementations.
+• Support for seamless LoRA fine-tuning for domain-specific vocabulary.
+Target: Under 1-second latency for a 5-second audio clip.
 
 4.5 Sample Implementation (Hackathon Prototype)
-    from unsloth import FastLanguageModel
-    import whisper_tiny, secure_delete
+    def process_audio_stream():
+    # Simplified from src/gradio_app_integrated.py
+    audio_buffer = []
+    buffer_size = int(3.0 * 16000) # 3-second buffer
 
-    def process_audio_chunk(chunk):
-        # 1. Local transcription
-        text = whisper_tiny.transcribe(chunk)
+    while is_streaming:
+        chunk = audio_queue.get()
+        audio_buffer.extend(chunk.flatten())
 
-        # 2. On-device Gemma inference (4-bit)
-        model, tokenizer = FastLanguageModel.from_pretrained(
-            "unsloth/gemma-3n-e4b-it", load_in_4bit=True, device_map="auto")
-        context = gemma_extract(model, tokenizer, text)
+        if len(audio_buffer) >= buffer_size:
+            audio_data = np.array(audio_buffer[:buffer_size], dtype=np.float32)
+            
+            # 1. Transcription with Whisper
+            result = whisper_model.transcribe(audio_data, language="en")
+            transcript = result['text'].strip()
 
-        # 3. Securely delete audio
-        secure_delete(chunk)
+            # 2. JSON Extraction with Gemma
+            if transcript and extraction_manager:
+                json_result = extraction_manager.extract_from_transcript(transcript)
+                # ... (update UI) ...
 
-        # 4. Store structured memory
-        if context.has_appointment:
-            store_reminder(context.appointment)
+            audio_buffer = audio_buffer[buffer_size:]
 
 ------------------------------------------------------------
 5. Privacy Architecture – A Diary that Burns Its Pages
@@ -110,17 +109,23 @@ No raw speech. No cloud. No profiling. Privacy by math and design.
 ------------------------------------------------------------
 6. Development Status (Hackathon Snapshot)
 ------------------------------------------------------------
-✓ Hardware platform selected.           🔄 Real-time audio pipeline optimisation.
+6.1. Performance Benchmark
+A preliminary timing test was conducted to measure the end-to-end pipeline latency.
+`time python src/gradio_app_integrated.py --test example_audio/mom.aac`
+(Result to be pasted here)
+
+6.2. Completed & In-Progress
+✓ Gradio web interface implemented.     🔄 Real-time audio pipeline optimisation.
 ✓ System architecture & data-flow.     🔄 Gemma 3N LoRA fine-tuning.
-✓ Whisper-Tiny integration.            🔄 Low-power haptic firmware.
+✓ Whisper integration (configurable model sizes).  🔄 Hardware development.
 Timeline: full alpha prototype by Q4 2025.
 
 ------------------------------------------------------------
 7. Known Limitations
 ------------------------------------------------------------
-• Battery draw – continuous microphone polling ≈ 80 mA.
-• ASR robustness – Whisper-Tiny struggles in noisy streets.
-• Hardware – using dev-boards; custom PCB & RF tuning required.
+• GPU Memory – Gemma 3-N requires significant VRAM (8GB+ recommended).
+• ASR robustness – Whisper struggles in noisy environments.
+• Streaming Latency – 3-second buffer required for accurate transcription.
 
 ------------------------------------------------------------
 8. Future Milestones
@@ -148,4 +153,10 @@ Technology shouldn’t ask vulnerable people to adapt; Raynos adapts to them.  W
 The world says "remember"; Raynos whispers "you’re already enough."  
 
 Disclaimer: Raynos is a research prototype, not a medical device, and must not be used for diagnosing or treating disease.
+
+------------------------------------------------------------
+11. Project Links
+------------------------------------------------------------
+• Video Demo: [Link to be added]
+• Gradio Web UI: [Link to be added]
 

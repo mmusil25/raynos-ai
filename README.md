@@ -15,13 +15,11 @@ A privacy-first AI pipeline that processes audio locally using Gemma 3-N with Un
 
 ## 🚨 Important Disclosure
 
-**This implementation demonstrates the core AI pipeline.** The BLE audio streaming functionality uses a mock implementation that simulates the expected behavior. When real BLE devices become available, the mock BLE source can be replaced with actual device communication.
-
-**🛠️ Current Top Priority:** Replace the mock BLE audio stream with a real-time connection to physical BLE devices. Contributions in this area are highly welcomed and will have the highest impact.
+**This is a proof-of-concept implementation** that demonstrates the core AI pipeline for audio processing and structured data extraction using Gemma 3-N. The current implementation supports microphone input and file uploads through a Gradio web interface.
 
 ## 🎯 Features
 
-- **Real-time Audio Processing**: Utilizes BLE for audio streaming and supports multiple sources, including devices, microphones, and files.
+- **Real-time Audio Processing**: Supports microphone streaming and audio file uploads through a web interface.
 - **Local Transcription & NLP**: Employs Whisper for on-device transcription and Gemma 3N for intent extraction, ensuring privacy.
 - **Optimized Performance**: Integrated with Unsloth for 2x faster Gemma 3N inference and reduced memory usage.
 - **Interactive Web Interface**: Features a Gradio-based UI for live streaming and interaction.
@@ -57,7 +55,7 @@ python test_unsloth_gemma.py
 - Python 3.10+
 - CUDA-capable GPU (optional but recommended for fast inference)
 - Ubuntu/Linux (recommended) or Windows with WSL2
-- For actual BLE: Bluetooth adapter
+
 - For microphone: Audio input device (not available in WSL)
 - Unsloth for 2x faster Gemma 3n inference (automatically installed)
 
@@ -81,7 +79,7 @@ pip install -r requirements.txt
 
 ```bash
 # Core dependencies
-pip install torch transformers openai-whisper bleak gradio
+pip install torch transformers openai-whisper gradio
 
 # Audio processing
 pip install numpy scipy sounddevice
@@ -92,9 +90,9 @@ sudo apt-get install ffmpeg  # Required for Whisper
 
 ### 3. Run the Demo
 
-#### Option A: Web Interface (Gradio)
+#### Web Interface (Gradio)
 ```bash
-python gradio_app.py --share
+python src/gradio_app_integrated.py --share
 ```
 This will start a web server and provide a public URL if `--share` is used.
 
@@ -104,7 +102,7 @@ This will start a web server and provide a public URL if `--share` is used.
 ```
 ┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
 │  Audio Source   │────▶│  Transcription   │────▶│ JSON Extraction │
-│  (BLE/Mic/File) │     │  (Whisper/API)   │     │ (Mock/Gemma)    │
+│  (Mic/File)     │     │  (Whisper)       │     │ (Gemma 3-N)     │
 └─────────────────┘     └──────────────────┘     └─────────────────┘
          │                       │                         │
          └───────────────────────┴─────────────────────────┘
@@ -122,16 +120,18 @@ This will start a web server and provide a public URL if `--share` is used.
 
 ```
 raynos-ai/
-├── ble_listener.py              # BLE/audio source management
-├── whisper_tiny_transcription.py # Transcription engine
-├── gemma_3n_json_extractor.py   # JSON extraction from transcripts
-├── demo.py                      # Command-line interface
-├── gradio_app.py               # Web interface
-├── simulate_live_mic.py        # Microphone simulation for testing
-├── samples/                    # Test audio files
-│   └── harvard.wav            # Sample speech file
-├── requirements.txt           # Python dependencies
-└── README.md                 # This file
+├── src/                          # Source code directory
+│   ├── gradio_app_integrated.py # Main Gradio web interface
+│   └── gemma_3n_json_extractor.py # Gemma 3-N JSON extraction
+├── example_audio/                # Test audio files
+│   └── mom.aac                  # Sample audio file
+├── docs/                         # Documentation
+│   └── architecture.drawio.png  # System architecture diagram
+├── third_party/                  # Third-party notices
+│   └── UNSLOTH_NOTICE           # Unsloth attribution
+├── requirements.txt             # Python dependencies
+├── LICENSE                      # Apache 2.0 license
+└── README.md                   # This file
 ```
 
 ## 🔧 Configuration
@@ -150,36 +150,26 @@ export CUDA_VISIBLE_DEVICES=0
 - **Sample Rate**: 16kHz (configurable)
 - **Channels**: Mono
 - **Bit Depth**: 16-bit
-- **Buffer Duration**: 2 seconds for streaming
+- **Buffer Duration**: 3 seconds for streaming
 
 ## 📖 Usage Examples
 
-
-
-### 2. Streaming with Callbacks
+### 1. Using the Gradio Interface
 ```python
-from src.ble_listener import AudioStreamManager, MockBLESource
+from src.gradio_app_integrated import create_interface
 
-# Create audio source
-source = MockBLESource()
-manager = AudioStreamManager(source)
-
-# Add callback
-def on_audio(chunk):
-    print(f"Received {len(chunk)} bytes of audio")
-
-manager.add_callback(on_audio)
-
-# Start streaming
-await manager.start_streaming()
+# Launch the interface
+if __name__ == "__main__":
+    interface = create_interface()
+    interface.launch(share=True)
 ```
 
-### 3. Custom JSON Extraction
+### 2. Custom JSON Extraction
 ```python
 from src.gemma_3n_json_extractor import ExtractionManager
 
-# Initialize extractor
-extractor = ExtractionManager(extractor_type="mock")
+# Initialize extractor with Gemma 3-N
+extractor = ExtractionManager(extractor_type="gemma")
 
 # Extract from transcript
 result = extractor.extract_from_transcript(
@@ -192,17 +182,12 @@ print(result)
 
 ## 🐛 Known Limitations
 
-1. **Mock BLE Implementation**: The current BLE functionality is simulated. Real BLE device integration is a top priority.
-2. **WSL Audio Issues**: Microphone/audio passthrough requires complex setup
-3. **GPU Memory**: Gemma models require significant VRAM
-4. **Streaming Latency**: 2-second buffer for transcription
+1. **WSL Audio Issues**: Microphone/audio passthrough requires complex setup in WSL environments
+2. **GPU Memory**: Gemma 3-N model requires significant VRAM (recommended 8GB+)
+3. **Streaming Latency**: 3-second buffer for optimal transcription accuracy
+4. **Audio Format**: Currently optimized for 16kHz mono audio
 
 ## 🔍 Troubleshooting
-
-### "Connection refused" for BLE
-- Ensure Bluetooth is enabled
-- Check that `bleak` is installed: `pip install bleak`
-- Use mock source for testing: `--audio-source mock`
 
 ### "PortAudio not found" 
 - Install system dependencies: `sudo apt-get install portaudio19-dev`
@@ -219,7 +204,7 @@ print(result)
 
 This is a proof-of-concept implementation. Key areas for improvement:
 
-1. Integration with real BLE devices
+1. Hardware integration for wearable devices
 2. Optimized streaming protocols
 3. Better Gemma prompt engineering
 4. Additional language support
@@ -234,7 +219,7 @@ Apache 2.0 License - See LICENSE file for details
 - OpenAI for Whisper
 - Google for Gemma models
 - Gradio team for the UI framework
-- Based Hardware for the BLE audio concept
+- Community contributors to the open-source AI ecosystem
 
 ---
 
