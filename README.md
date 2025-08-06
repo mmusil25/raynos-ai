@@ -1,9 +1,9 @@
 # BLE Audio → Whisper → Gemma Pipeline
 
-A Python implementation of a real-time audio processing pipeline that streams audio from BLE devices (like the Omi pendant), transcribes it using OpenAI's Whisper, and extracts structured data using Google's Gemma model.
+A Python implementation of a real-time audio processing pipeline that streams audio from BLE devices, transcribes it using OpenAI's Whisper, and extracts structured data using Google's Gemma model.
 
 <p align="center">
-  <img src="https://img.shields.io/badge/License-Apache%202.0-blue?style=for-the-badge">
+  <img src="https://img.shields.io/badge/License-GPL%203.0-blue?style=for-the-badge">
   <img src="https://img.shields.io/badge/Python-3.8%2B-green?style=for-the-badge">
   <img src="https://img.shields.io/badge/Gemma-3N-orange?style=for-the-badge">
   <img src="https://img.shields.io/badge/Unsloth-Enabled-lightgrey?style=for-the-badge">
@@ -15,9 +15,9 @@ A Python implementation of a real-time audio processing pipeline that streams au
 
 ## 🚨 Important Disclosure
 
-**This implementation was developed without access to an actual Omi pendant device.** The BLE audio streaming functionality uses a mock implementation that simulates the expected behavior. When a real Omi device becomes available, the mock BLE source can be replaced with actual device communication.
+**This implementation demonstrates the core AI pipeline.** The BLE audio streaming functionality uses a mock implementation that simulates the expected behavior. When real BLE devices become available, the mock BLE source can be replaced with actual device communication.
 
-**🛠️ Current Top Priority:** Replace the mock BLE audio stream with a real-time connection to the physical Omi pendant. Contributions in this area are highly welcomed and will have the highest impact.
+**🛠️ Current Top Priority:** Replace the mock BLE audio stream with a real-time connection to physical BLE devices. Contributions in this area are highly welcomed and will have the highest impact.
 
 ## 🎯 Features
 
@@ -69,7 +69,7 @@ python test_unsloth_gemma.py
 ### 1. Clone and Setup Environment
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/mmusil25/raynos-ai.git
 cd python-ble-audio
 
 # Create virtual environment
@@ -258,14 +258,14 @@ This is a proof-of-concept implementation. Key areas for improvement:
 
 ## 📄 License
 
-MIT License - See LICENSE file for details
+GPL-3.0 License - See LICENSE file for details
 
 ## 🙏 Acknowledgments
 
 - OpenAI for Whisper
 - Google for Gemma models
 - Gradio team for the UI framework
-- Based Hardware for the Omi pendant concept
+- Based Hardware for the BLE audio concept
 
 ---
 
