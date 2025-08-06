@@ -2,6 +2,9 @@
 
 A Python implementation of a real-time audio processing pipeline that streams audio from BLE devices (like the Omi pendant), transcribes it using OpenAI's Whisper, and extracts structured data using Google's Gemma model.
 
+![Raynos Architecture](docs/architecture.drawio.png)
+
+
 ## 🚨 Important Disclosure
 
 **This implementation was developed without access to an actual Omi pendant device.** The BLE audio streaming functionality uses a mock implementation that simulates the expected behavior. When a real Omi device becomes available, the mock BLE source can be replaced with actual device communication.
