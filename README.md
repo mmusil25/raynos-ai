@@ -10,7 +10,7 @@ A privacy-first AI pipeline that processes audio locally using Gemma 3-N with Un
   <img src="https://img.shields.io/badge/Privacy-100%25%20On--Device-red?style=for-the-badge">
 </p>
 
-![Raynos Architecture](docs/architecture.drawio.png)
+![Raynos Architecture](docs/architecture.png)
 
 🌐 **[Live Demo](https://00b0bc384e84550fd0.gradio.live/)** | 📹 **[Video Walkthrough](https://youtu.be/u2AMK56FoY4)** | 📦 **[GitHub Repository](https://github.com/mmusil25/raynos-ai)**
 
@@ -225,4 +225,4 @@ Apache 2.0 License - See LICENSE file for details
 
 ---
 
-**Note**: This implementation demonstrates the architecture and data flow for a BLE audio processing pipeline. For production use, additional error handling, security measures, and optimization would be required.
+**Note**: This implementation demonstrates the architecture and data flow for an audio processing pipeline. For production use, additional error handling, security measures, and optimization would be required.

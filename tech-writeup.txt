@@ -12,7 +12,7 @@ Team: Clannos AI
   <img src="https://img.shields.io/badge/Privacy-100%25%20On--Device-red?style=for-the-badge">
 </p>
 
-![Raynos Architecture](docs/architecture.drawio.png)
+![Raynos Architecture](docs/architecture.png)
 
 [🌐 Live Demo](https://00b0bc384e84550fd0.gradio.live/) | [📹 Video](https://youtu.be/u2AMK56FoY4) | [📦 GitHub Repo](https://github.com/mmusil25/raynos-ai)
 
@@ -124,8 +124,9 @@ No raw speech. No cloud. No profiling. Privacy by math and design.
 ------------------------------------------------------------
 6.1. Performance Benchmark
 A preliminary timing test was conducted to measure the end-to-end pipeline latency.
-Note: Performance benchmarks depend on hardware configuration.
-Typical results on consumer GPU: First token 0.63s • End-to-end 0.91s
+Performance benchmark on RTX 4090:
+`time python src/gradio_app_integrated.py --test example_audio/mom.aac`
+Result: First token 0.63s • End-to-end 0.91s
 
 6.2. Completed & In-Progress
 ✓ Gradio web interface implemented.     🔄 Real-time audio pipeline optimisation.
