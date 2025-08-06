@@ -101,20 +101,6 @@ python gradio_app.py --share
 ```
 This will start a web server and provide a public URL if `--share` is used.
 
-#### Option B: Command Line
-```bash
-# Process a single file
-python demo.py file --input samples/harvard.wav
-
-# Process all files in a directory
-python demo.py directory --input samples/
-
-# Live streaming (mock BLE)
-python demo.py stream --audio-source mock
-
-# Live streaming (microphone - requires native OS)
-python demo.py stream --audio-source mic
-```
 
 ## 🏗️ Architecture
 
