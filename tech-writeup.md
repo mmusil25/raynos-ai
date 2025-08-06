@@ -40,7 +40,7 @@ Tech must **adapt to humans**, not the reverse.
 
 ---
 
-### 3 · Solution Overview – *Raynos Pendant + Glyna AI Core*
+### 3 · Solution Overview – *Raynos: Privacy-First AI Assistant*
 > *“While others build apps for phones she can’t use… we built dignity she can wear.”*
 
 Raynos is a lightweight pendant that:

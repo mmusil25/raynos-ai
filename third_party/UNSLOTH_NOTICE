@@ -1,0 +1,1 @@
+This repository bundles Unsloth (Apache-2.0) for optimized Gemma 3-N inference. Unsloth is a project that provides 2x faster inference and 60% less memory usage for LLM models. For more information, visit: https://github.com/unsloth/unsloth

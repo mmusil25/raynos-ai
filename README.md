@@ -1,10 +1,10 @@
-# BLE Audio → Whisper → Gemma Pipeline
+# Raynos – Gemma 3-N / Unsloth On-Device Pipeline
 
-A Python implementation of a real-time audio processing pipeline that streams audio from BLE devices, transcribes it using OpenAI's Whisper, and extracts structured data using Google's Gemma model.
+A privacy-first AI pipeline that processes audio locally using Gemma 3-N with Unsloth optimization. This implementation showcases real-time audio transcription with Whisper and structured data extraction, all running completely on-device with no cloud dependencies.
 
 <p align="center">
-  <img src="https://img.shields.io/badge/License-GPL%203.0-blue?style=for-the-badge">
-  <img src="https://img.shields.io/badge/Python-3.8%2B-green?style=for-the-badge">
+  <img src="https://img.shields.io/badge/License-Apache%202.0-blue?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Python-3.10%2B-green?style=for-the-badge">
   <img src="https://img.shields.io/badge/Gemma-3N-orange?style=for-the-badge">
   <img src="https://img.shields.io/badge/Unsloth-Enabled-lightgrey?style=for-the-badge">
   <img src="https://img.shields.io/badge/Privacy-100%25%20On--Device-red?style=for-the-badge">
@@ -258,7 +258,7 @@ This is a proof-of-concept implementation. Key areas for improvement:
 
 ## 📄 License
 
-GPL-3.0 License - See LICENSE file for details
+Apache 2.0 License - See LICENSE file for details
 
 ## 🙏 Acknowledgments
 

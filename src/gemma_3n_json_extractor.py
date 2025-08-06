@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+
 """
 Gemma 3n JSON Extractor Module
 Extracts structured JSON data from transcripts using Google's Gemma 3n model
