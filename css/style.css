@@ -307,6 +307,33 @@ nav {
 	line-height: 1.6;
 }
 
+.hero p[align="center"] {
+	max-width: none;
+	margin: 2rem 0;
+}
+
+.hero p[align="center"] img {
+	margin: 0.25rem;
+	transition: transform 0.2s ease;
+}
+
+.hero p[align="center"] img:hover {
+	transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+	.hero p[align="center"] {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.5rem;
+	}
+	
+	.hero p[align="center"] img {
+		margin: 0;
+	}
+}
+
 .cta-primary {
 	display: inline-flex;
 	align-items: center;
