@@ -21,14 +21,11 @@ A privacy-first AI pipeline that processes audio locally using Gemma 3-N with Un
 
 ## 🎯 Features
 
-- **BLE Audio Streaming** with auto-reconnect functionality (mock and real implementations)
-- **Multiple Audio Sources**: BLE devices, local microphone, or audio files
-- **Real-time Transcription** using OpenAI Whisper (Tiny model for speed)
-- **Intent & Entity Extraction** using mock or Gemma 3n models
-- **Web Interface** via Gradio with live streaming display
-- **GPU Acceleration** support for faster processing
-- **Structured JSON Output** following the required schema
-- **Unsloth Optimization** for 2x faster Gemma 3n inference
+- **Real-time Audio Processing**: Utilizes BLE for audio streaming and supports multiple sources, including devices, microphones, and files.
+- **Local Transcription & NLP**: Employs Whisper for on-device transcription and Gemma 3N for intent extraction, ensuring privacy.
+- **Optimized Performance**: Integrated with Unsloth for 2x faster Gemma 3N inference and reduced memory usage.
+- **Interactive Web Interface**: Features a Gradio-based UI for live streaming and interaction.
+- **Structured Data Output**: Delivers organized JSON output, adhering to a predefined schema.
 
 ## 🚀 Unsloth Integration (Competition Requirement)
 
@@ -46,7 +43,7 @@ This project uses **Unsloth** for optimized Gemma 3n inference, which is a requi
 pip install "unsloth[torch]"
 ```
 
-The integration is automatic - when Unsloth is installed, the system will automatically use the optimized `unsloth/gemma-3n-e4b-it` model for faster inference.
+The integration is automatic. When Unsloth is installed, the system defaults to the optimized `unsloth/gemma-3n-e4b-it` model for faster inference.
 
 ### Testing Unsloth
 
@@ -57,7 +54,7 @@ python test_unsloth_gemma.py
 
 ## 📋 Requirements
 
-- Python 3.8+
+- Python 3.10+
 - CUDA-capable GPU (optional but recommended for fast inference)
 - Ubuntu/Linux (recommended) or Windows with WSL2
 - For actual BLE: Bluetooth adapter
@@ -70,7 +67,7 @@ python test_unsloth_gemma.py
 
 ```bash
 git clone https://github.com/mmusil25/raynos-ai.git
-cd python-ble-audio
+cd raynos-ai
 
 # Create virtual environment
 python -m venv venv
@@ -124,7 +121,7 @@ This will start a web server and provide a public URL if `--share` is used.
 ## 📁 Project Structure
 
 ```
-python-ble-audio/
+raynos-ai/
 ├── ble_listener.py              # BLE/audio source management
 ├── whisper_tiny_transcription.py # Transcription engine
 ├── gemma_3n_json_extractor.py   # JSON extraction from transcripts
@@ -142,8 +139,7 @@ python-ble-audio/
 ### Environment Variables
 
 ```bash
-# For Deepgram API (alternative to Whisper)
-export DEEPGRAM_API_KEY=YOUR_DEEPGRAM_API_KEY  # Replace with your own key; do NOT commit secrets
+
 
 # For GPU acceleration (automatic if available)
 export CUDA_VISIBLE_DEVICES=0
@@ -158,24 +154,11 @@ export CUDA_VISIBLE_DEVICES=0
 
 ## 📖 Usage Examples
 
-### 1. Basic File Processing
-```python
-from demo import AudioPipeline
 
-# Initialize pipeline
-pipeline = AudioPipeline(
-    transcription_engine="whisper",
-    extraction_model="mock"
-)
-
-# Process file
-result = await pipeline.process_file("audio.wav")
-print(result)
-```
 
 ### 2. Streaming with Callbacks
 ```python
-from ble_listener import AudioStreamManager, MockBLESource
+from src.ble_listener import AudioStreamManager, MockBLESource
 
 # Create audio source
 source = MockBLESource()
@@ -193,7 +176,7 @@ await manager.start_streaming()
 
 ### 3. Custom JSON Extraction
 ```python
-from gemma_3n_json_extractor import ExtractionManager
+from src.gemma_3n_json_extractor import ExtractionManager
 
 # Initialize extractor
 extractor = ExtractionManager(extractor_type="mock")
@@ -209,7 +192,7 @@ print(result)
 
 ## 🐛 Known Limitations
 
-1. **No Real Omi Device**: BLE functionality is simulated
+1. **Mock BLE Implementation**: The current BLE functionality is simulated. Real BLE device integration is a top priority.
 2. **WSL Audio Issues**: Microphone/audio passthrough requires complex setup
 3. **GPU Memory**: Gemma models require significant VRAM
 4. **Streaming Latency**: 2-second buffer for transcription
@@ -236,7 +219,7 @@ print(result)
 
 This is a proof-of-concept implementation. Key areas for improvement:
 
-1. Real Omi device integration
+1. Integration with real BLE devices
 2. Optimized streaming protocols
 3. Better Gemma prompt engineering
 4. Additional language support
