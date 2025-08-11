@@ -1,0 +1,29 @@
+# Core dependencies for Hugging Face Spaces
+torch==2.1.0
+transformers==4.36.0
+accelerate==0.25.0
+
+# Whisper for transcription
+openai-whisper==20231117
+
+# Audio processing
+sounddevice==0.4.6
+numpy==1.24.3
+scipy==1.11.0
+
+# Gemma model optimization (optional - comment out if causing issues)
+# unsloth==0.0.5
+# bitsandbytes==0.42.0
+
+# Web interface
+gradio==4.12.0
+pandas==2.0.3
+
+# API and utilities
+requests==2.31.0
+ffmpeg-python==0.2.0
+
+# Additional ML utilities
+sentencepiece==0.1.99
+protobuf==3.20.3
+einops==0.7.0
