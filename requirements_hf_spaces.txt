@@ -15,8 +15,8 @@ scipy==1.11.0
 # unsloth==0.0.5
 # bitsandbytes==0.42.0
 
-# Web interface
-gradio==4.12.0
+# Web interface  
+gradio>=5.39.0
 pandas==2.0.3
 
 # API and utilities
